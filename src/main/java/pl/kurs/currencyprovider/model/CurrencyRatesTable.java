@@ -13,7 +13,7 @@ public class CurrencyRatesTable {
 
     private String table;
     private String no;
-    private LocalDate tradingDate;
-    private LocalDate effectiveDate;
+    private String tradingDate;
+    private String effectiveDate;
     private List<CurrencyRate> rates = new ArrayList<>();
 }
