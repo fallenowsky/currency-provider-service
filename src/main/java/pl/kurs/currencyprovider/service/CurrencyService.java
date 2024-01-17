@@ -1,4 +1,4 @@
-package pl.kurs.currencyprovider.scheduler;
+package pl.kurs.currencyprovider.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public class CurrencyScheduler {
+public class CurrencyService {
 
     private final AmqpTemplate amqpTemplate;
     private final NbpFeignClient nbpClient;
