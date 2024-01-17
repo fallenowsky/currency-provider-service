@@ -1,0 +1,13 @@
+spring:
+  rabbitmq:
+    queueName: ratesQueue
+    host: localhost
+    username: guest
+    password: guest
+
+scheduled:
+  cron:
+    fetchRatesPeriod: * 0/5 * * * *
+
+server:
+  port: 8081
