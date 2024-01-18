@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pl.kurs.currencyprovider.model.CurrencyRate;
 import pl.kurs.currencyprovider.model.dto.CurrencyRateDto;
 
 @Service
