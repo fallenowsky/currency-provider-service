@@ -10,7 +10,7 @@ public class CurrencyProcessingService {
 
     private final CurrencyService currencyService;
 
-    @Scheduled(cron = "${app.scheduler.cron.fetchRatesPeriod}")
+    @Scheduled(cron = "${app.scheduler.cron.fetchRatesPeriod}", zone = "Europe/Warsaw")
     public void processCurrencySend() {
         currencyService.getExchangeRates();
     }
