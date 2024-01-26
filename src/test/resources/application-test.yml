@@ -4,3 +4,6 @@ app:
       fetchRatesPeriod: "* * * * * ?"
 
 
+spring:
+  rabbitmq:
+    queueName: ratesQueue

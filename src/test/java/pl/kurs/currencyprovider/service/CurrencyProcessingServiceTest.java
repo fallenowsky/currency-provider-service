@@ -25,8 +25,9 @@ class CurrencyProcessingServiceTest {
 
     @Test
     public void testProcessCurrencySend_ResultsInTwoMockInteractions() {
-        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() ->
-                verify(currencyService, times(2)).getExchangeRates()
+        await()
+                .atMost(2, TimeUnit.SECONDS)
+                .untilAsserted(() -> verify(currencyService, times(2)).getExchangeRates()
         );
     }
 

@@ -9,6 +9,8 @@ app:
   scheduler:
     cron:
       fetchRatesPeriod: "* 0/5 * * * ?"
+  client:
+    base-url: "https://api.nbp.pl/api/exchangerates"
 
 server:
   port: 8081

@@ -3,10 +3,11 @@ package pl.kurs.currencyprovider.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kurs.currencyprovider.client.NbpFeignClient;
-import pl.kurs.currencyprovider.model.CurrencyRatesTable;
-import pl.kurs.currencyprovider.model.dto.CurrencyRateDto;
+import pl.kurs.currencyprovider.model.CurrencyRatesTableDto;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +18,11 @@ public class CurrencyService {
 
 
     public void getExchangeRates() {
-        nbpClient.getCurrencyRates().stream()
-                .map(CurrencyRatesTable::getRates)
+        Optional.ofNullable(nbpClient.getCurrencyRates())
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(CurrencyRatesTableDto::getRates)
                 .flatMap(Collection::stream)
-                .map(CurrencyRateDto::mapToDto)
                 .forEach(currencyRateSender::send);
     }
 
