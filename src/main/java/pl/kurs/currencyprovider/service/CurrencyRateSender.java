@@ -1,7 +1,7 @@
 package pl.kurs.currencyprovider.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.kurs.currencyprovider.model.CurrencyRateDto;
@@ -10,13 +10,13 @@ import pl.kurs.currencyprovider.model.CurrencyRateDto;
 @RequiredArgsConstructor
 public class CurrencyRateSender {
 
-    private final AmqpTemplate amqpTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
     @Value("${spring.rabbitmq.queueName}")
     private String queueName;
 
 
     public void send(CurrencyRateDto rate) {
-        amqpTemplate.convertAndSend(queueName, rate);
+        rabbitTemplate.convertAndSend(queueName, rate);
     }
 }
