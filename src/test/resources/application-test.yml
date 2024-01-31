@@ -3,8 +3,7 @@ app:
     cron:
       fetchRatesPeriod: "* * * * * ?"
   client:
-    baseUrl: "https://api.nbp.pl/api/exchangerates"
-    detailedUrl: "/tables/C"
+    base-url: "http://localhost:8090"
 
 spring:
   rabbitmq:

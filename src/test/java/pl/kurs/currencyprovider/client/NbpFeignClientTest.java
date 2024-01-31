@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.kurs.currencyprovider.model.CurrencyRateDto;
 import pl.kurs.currencyprovider.model.CurrencyRatesTableDto;
 
@@ -25,19 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @WireMockTest(httpPort = 8090)
 class NbpFeignClientTest {
 
-    @Value("${app.client.baseUrl}")
-    private String baseUrl;
-
-    @Value("${app.client.detailedUrl}")
-    private String detailedUrl;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
     private NbpFeignClient nbpFeignClient;
 
-    private CurrencyRatesTableDto currencyTable;
+    private List<CurrencyRatesTableDto> currencyTablesResponse;
 
     @BeforeEach
     public void setUp() {
@@ -53,22 +44,24 @@ class NbpFeignClientTest {
                 .ask(BigDecimal.valueOf(4.75))
                 .bid(BigDecimal.valueOf(4.60))
                 .build();
-        currencyTable = CurrencyRatesTableDto.builder()
+        CurrencyRatesTableDto currencyTable = CurrencyRatesTableDto.builder()
                 .table("C")
                 .no("019/C/NBP/2024")
                 .tradingDate("2024-01-31")
                 .effectiveDate("2024-01-30")
                 .rates(List.of(dollar, frank))
                 .build();
+        currencyTablesResponse = List.of(currencyTable);
     }
 
 
     @Test
     public void testGetCurrencyRates_HappyPath_ResultsInCorrectResponse() throws JsonProcessingException {
-        String body = objectMapper.writeValueAsString(currencyTable);
+        String body = objectMapper.writeValueAsString(currencyTablesResponse);
 
-        stubFor(get(baseUrl + detailedUrl).willReturn(aResponse()
+        stubFor(get(urlEqualTo("/tables/C")).willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
+                .withStatus(200)
                 .withBody(body)
         ));
 
@@ -80,7 +73,7 @@ class NbpFeignClientTest {
                 .isNotEmpty()
                 .hasSize(1);
 
-        String returnedJson = objectMapper.writeValueAsString(ratesTable.get(0));
+        String returnedJson = objectMapper.writeValueAsString(ratesTable);
         assertThat(returnedJson).isEqualTo(body);
     }
 
