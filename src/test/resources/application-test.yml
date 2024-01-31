@@ -2,7 +2,9 @@ app:
   scheduler:
     cron:
       fetchRatesPeriod: "* * * * * ?"
-
+  client:
+    baseUrl: "https://api.nbp.pl/api/exchangerates"
+    detailedUrl: "/tables/C"
 
 spring:
   rabbitmq:
