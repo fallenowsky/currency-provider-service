@@ -4,6 +4,7 @@ app:
       fetchRatesPeriod: "* * * * * ?"
   client:
     base-url: "http://localhost:8090"
+    detailed-url: "/tables/C"
 
 spring:
   rabbitmq:

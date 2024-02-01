@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.kurs.currencyprovider.model.CurrencyRateDto;
@@ -27,6 +28,9 @@ class NbpFeignClientTest {
 
     @Autowired
     private NbpFeignClient nbpFeignClient;
+
+    @Value("${app.client.detailed-url}")
+    private String detailedUrl;
 
     private List<CurrencyRatesTableDto> currencyTablesResponse;
 
@@ -59,12 +63,11 @@ class NbpFeignClientTest {
     public void testGetCurrencyRates_HappyPath_ResultsInCorrectResponse() throws JsonProcessingException {
         String body = objectMapper.writeValueAsString(currencyTablesResponse);
 
-        stubFor(get(urlEqualTo("/tables/C")).willReturn(aResponse()
+        stubFor(get(urlEqualTo(detailedUrl)).willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withStatus(200)
                 .withBody(body)
         ));
-
 
         List<CurrencyRatesTableDto> ratesTable = nbpFeignClient.getCurrencyRates();
 
