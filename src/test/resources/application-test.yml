@@ -8,4 +8,4 @@ app:
 
 spring:
   rabbitmq:
-    queueName: ratesQueue
+    queueName: rates_queue

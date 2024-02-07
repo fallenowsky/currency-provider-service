@@ -36,18 +36,16 @@ class NbpFeignClientTest {
 
     @BeforeEach
     public void setUp() {
-        CurrencyRateDto dollar = CurrencyRateDto.builder()
-                .currency("US Dollar")
-                .code("USD")
-                .ask(BigDecimal.valueOf(3.95))
-                .bid(BigDecimal.valueOf(3.85))
-                .build();
-        CurrencyRateDto frank = CurrencyRateDto.builder()
-                .currency("Frank")
-                .code("CHF")
-                .ask(BigDecimal.valueOf(4.75))
-                .bid(BigDecimal.valueOf(4.60))
-                .build();
+        CurrencyRateDto dollar = new CurrencyRateDto()
+                .setCurrency("US Dollar")
+                .setCode("USD")
+                .setAsk(BigDecimal.valueOf(3.95))
+                .setBid(BigDecimal.valueOf(3.85));
+        CurrencyRateDto frank = new CurrencyRateDto()
+                .setCurrency("Frank")
+                .setCode("CHF")
+                .setAsk(BigDecimal.valueOf(4.75))
+                .setBid(BigDecimal.valueOf(4.60));
         CurrencyRatesTableDto currencyTable = CurrencyRatesTableDto.builder()
                 .table("C")
                 .no("019/C/NBP/2024")

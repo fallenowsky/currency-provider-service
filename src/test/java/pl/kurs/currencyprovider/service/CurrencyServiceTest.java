@@ -34,14 +34,12 @@ class CurrencyServiceTest {
 
     @BeforeEach
     public void init() {
-        CurrencyRateDto euro = CurrencyRateDto.builder().currency("EURO").code("EUR")
-                .bid(BigDecimal.valueOf(4.31))
-                .ask(BigDecimal.valueOf(4.25))
-                .build();
-        CurrencyRateDto frank = CurrencyRateDto.builder().currency("FRANK").code("FR")
-                .bid(BigDecimal.valueOf(4.61))
-                .ask(BigDecimal.valueOf(4.55))
-                .build();
+        CurrencyRateDto euro = new CurrencyRateDto().setCurrency("EURO").setCode("EUR")
+                .setBid(BigDecimal.valueOf(4.31))
+                .setAsk(BigDecimal.valueOf(4.25));
+        CurrencyRateDto frank = new CurrencyRateDto().setCurrency("FRANK").setCode("FR")
+                .setBid(BigDecimal.valueOf(4.61))
+                .setAsk(BigDecimal.valueOf(4.55));
         rates = Arrays.asList(euro, frank);
         currencyRatesTable = CurrencyRatesTableDto.builder()
                 .table("C")

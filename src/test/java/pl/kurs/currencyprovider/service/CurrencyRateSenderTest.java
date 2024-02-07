@@ -29,12 +29,11 @@ class CurrencyRateSenderTest {
 
     @BeforeEach
     public void init() {
-        dollar = CurrencyRateDto.builder()
-                .code("USD")
-                .currency("Dollar")
-                .ask(BigDecimal.valueOf(4.11))
-                .bid(BigDecimal.valueOf(4.21))
-                .build();
+        dollar = new CurrencyRateDto()
+                .setCode("USD")
+                .setCurrency("Dollar")
+                .setAsk(BigDecimal.valueOf(4.11))
+                .setBid(BigDecimal.valueOf(4.21));
     }
 
     @Test
