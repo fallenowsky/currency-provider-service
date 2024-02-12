@@ -9,7 +9,7 @@ spring:
 app:
   scheduler:
     cron:
-      fetchRatesPeriod: "0 0/5 * * * ?"
+      fetch-rates-period: "0 0/5 * * * ?"
   client:
     base-url: "https://api.nbp.pl/api/exchangerates"
 

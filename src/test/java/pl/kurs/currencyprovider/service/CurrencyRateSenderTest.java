@@ -4,25 +4,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.kurs.currencyprovider.model.CurrencyRateDto;
 
 import java.math.BigDecimal;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@Testcontainers
 class CurrencyRateSenderTest {
 
-    @MockBean
+    private static final String RABBIT_IMAGE = "rabbitmq:3.9-management-alpine";
+
+    @Value("${spring.rabbitmq.queue-name}")
+    private String queueName;
+
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
     private CurrencyRateSender service;
+
+    @Container
+    @ServiceConnection
+    private static RabbitMQContainer rabbitmq = new RabbitMQContainer(RABBIT_IMAGE);
 
     private CurrencyRateDto dollar;
 
@@ -36,21 +50,23 @@ class CurrencyRateSenderTest {
                 .setBid(BigDecimal.valueOf(4.21));
     }
 
+
     @Test
-    public void testSend_HappyPath_ResultsInMethodCallWithDesiredArgumentType() {
-        CurrencyRateSender currencyRateSender = mock(CurrencyRateSender.class);
-        doNothing().when(currencyRateSender).send(isA(CurrencyRateDto.class));
-
-        currencyRateSender.send(dollar);
-
-        verify(currencyRateSender, times(1)).send(eq(dollar));
+    public void testRabbitMqContainer_ConnectionEstablished() {
+        assertTrue(rabbitmq.isCreated());
+        assertTrue(rabbitmq.isRunning());
     }
 
     @Test
-    public void testSend_HappyPath_ResultsInMockMethodInvocation() {
+    public void testSend_ResultsInDatBeingSentToRabbitQueue() {
         service.send(dollar);
 
-        verify(rabbitTemplate, times(1)).convertAndSend(anyString(), eq(dollar));
+        Object received = rabbitTemplate.receiveAndConvert(queueName, 500);
+        assertTrue(received instanceof CurrencyRateDto);
+        assertThat((CurrencyRateDto) received)
+                .isNotNull()
+                .usingRecursiveComparison()
+                .isEqualTo(dollar);
     }
 
 }

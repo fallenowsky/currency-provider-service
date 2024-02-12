@@ -8,7 +8,7 @@ import pl.kurs.currencyprovider.properties.RabbitProperties;
 
 @Service
 @RequiredArgsConstructor
-public class CurrencyRateSender { //todo test rabbita w kontenerze
+public class CurrencyRateSender {
 
     private final RabbitTemplate rabbitTemplate;
     private final RabbitProperties rabbitProperties;

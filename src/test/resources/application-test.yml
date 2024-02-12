@@ -1,11 +1,11 @@
 app:
   scheduler:
     cron:
-      fetchRatesPeriod: "* * * * * ?"
+      fetch-rates-period: "* * * * * ?"
   client:
     base-url: "http://localhost:8090"
     detailed-url: "/tables/C"
 
 spring:
   rabbitmq:
-    queueName: rates_queue
+    queue-name: rates_queue
