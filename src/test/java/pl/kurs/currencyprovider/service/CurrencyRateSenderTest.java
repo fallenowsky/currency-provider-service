@@ -61,6 +61,7 @@ class CurrencyRateSenderTest {
     public void testSend_ResultsInDatBeingSentToRabbitQueue() {
         service.send(dollar);
 
+        // sciaga z kolejki
         Object received = rabbitTemplate.receiveAndConvert(queueName, 500);
         assertTrue(received instanceof CurrencyRateDto);
         assertThat((CurrencyRateDto) received)
